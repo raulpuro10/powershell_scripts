@@ -8,6 +8,6 @@
 
 3.2.- https://github.com/raulpuro10/powershell_scripts/blob/main/OCS_Inventory/ES-OCSAgent/Settings.ps1 for control parameters that https://github.com/raulpuro10/powershell_scripts/blob/main/OCS_Inventory/ES-OCSAgent/ocsinventory.ini must have.
 
-4.- Execute https://github.com/raulpuro10/powershell_scripts/blob/main/OCS_Inventory/ES-OCSPlugins/SyncPlugins.cmd for install plugins that you want
+4.- Execute https://github.com/raulpuro10/powershell_scripts/blob/main/OCS_Inventory/ES-OCSPlugins/SyncPlugins.cmd for install plugins that you want.
 
-Change "SERVERIP" and "GPO PATH" according to your scenary
+Change "SERVERIP" and "GPO PATH" according to your scenary.
