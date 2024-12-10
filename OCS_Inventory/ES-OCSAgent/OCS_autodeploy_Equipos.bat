@@ -10,13 +10,13 @@ REM **** Change it to upgrade the agent on all computer.
 set VERSION=2920
 
 REM **** This is the fully qualified domain name of your OCS Inventory ng server.
-set OCSSERVER=http://10.34.1.15/ocsinventory
+set OCSSERVER=http://SERVERIP/ocsinventory
 
 REM **** You must put here the address of your file server where OCSAgentSetup.exe is.
 REM **** For exemple :
 REM **** If OCSAgentSetup.exe is on \\filesserver\public\ocs\OCSAgentSetupx64.exe
 REM **** you must put : fileserver\public\ocs
-set INSTALLSERVER=newrest.corp\SysVol\newrest.corp\Policies\{FAD9211D-9636-47FD-98EF-BA567E12D97B}\Machine\Scripts\Startup
+set INSTALLSERVER=GPO PATH\Machine\Scripts\Startup
 REM **** Set to ON if you want install the SSL certificat and activate deployement feature
 REM **** before enable it : put the file cacert.pem on the sames directory as OCSAgentSetup.exe
 set DEPLOYE=OFF
@@ -30,12 +30,12 @@ IF EXIST "C:\Program Files\OCS Inventory agent\%VERSION%.txt" goto endend
 REM **** \\%INSTALLSERVER%\OCSAgentSetupx64.exe H /NOW /NO_SYSTRAY /SERVER:%OCSSERVER%
 if /i "%PROCESSOR_ARCHITECTURE%"=="x86" (
     if not defined PROCESSOR_ARCHITEW6432 (
-        \\%INSTALLSERVER%\OCSAgentSetupx86.exe /S /SERVER:http://10.34.1.15/ocsinventory /NOSPLASH /NOW /DEBUG
+        \\%INSTALLSERVER%\OCSAgentSetupx86.exe /S /SERVER:http://SERVERIP/ocsinventory /NOSPLASH /NOW /DEBUG
     ) else (
-        \\%INSTALLSERVER%\OCSAgentSetupx64.exe /S /SERVER:http://10.34.1.15/ocsinventory /NOSPLASH /NOW /DEBUG
+        \\%INSTALLSERVER%\OCSAgentSetupx64.exe /S /SERVER:http://SERVERIP/ocsinventory /NOSPLASH /NOW /DEBUG
     )
 ) else (
-    \\%INSTALLSERVER%\OCSAgentSetupx64.exe /S /SERVER:http://10.34.1.15/ocsinventory /NOSPLASH /NOW /DEBUG
+    \\%INSTALLSERVER%\OCSAgentSetupx64.exe /S /SERVER:http://SERVERIP/ocsinventory /NOSPLASH /NOW /DEBUG
 )
 
 timeout 60
