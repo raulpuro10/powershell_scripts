@@ -13,12 +13,9 @@
     return $false
  
 }
-    if (-not [System.IO.File]::Exists($archivoInstalaciones)) {
-        Add-Content '\\es-cpd-bck01\LogsGPO$\Instalaciones.csv' "Equipo;Windows;ServidorCorrecto"
-    }
 
 #capturamos el nombre a buscar en el fichero de ejemplo
-$nom= "10.34.1.15"
+$nom= "SAERVERIP"
 
 #almacenamos el fichero en una variable
 $fichero = "C:\ProgramData\OCS Inventory NG\Agent\ocsinventory.ini"
@@ -33,21 +30,8 @@ Write-Host "Fichero encontrado = $resultado"
 Start-Sleep -Seconds 120
 
 if ($resultado -match "False"){
+
     stop-service "OCS Inventory Service"
-    (New-Object -ComObject Scripting.FileSystemObject).CopyFile('\\newrest.corp\SysVol\newrest.corp\Policies\{FAD9211D-9636-47FD-98EF-BA567E12D97B}\Machine\Scripts\Startup\ocsinventory.ini', 'C:\ProgramData\OCS Inventory NG\Agent\ocsinventory.ini')
-    #Copy-Item -Path "\\newrest.corp\SysVol\newrest.corp\Policies\{FAD9211D-9636-47FD-98EF-BA567E12D97B}\Machine\Scripts\Startup\ocsinventory.ini" -Destination "C:\ProgramData\OCS Inventory NG\Agent\ocsinventory.ini" -Force
-
-        $archivoInstalaciones = "\\es-cpd-bck01\LogsGPO$\Instalaciones.csv"
-        $windowsVersion = (Get-WmiObject -class Win32_OperatingSystem).Caption
-        Add-Content $archivoInstalaciones "$($env:COMPUTERNAME);$($windowsVersion);$($resultado)"
-
+    (New-Object -ComObject Scripting.FileSystemObject).CopyFile('\\GPO PATH\ocsinventory.ini', 'C:\ProgramData\OCS Inventory NG\Agent\ocsinventory.ini')
     start-service "OCS Inventory Service"
-
-
-    if ($resultado -match "True"){
-
-        $archivoInstalaciones = "\\es-cpd-bck01\LogsGPO$\Instalaciones.csv"
-        $windowsVersion = (Get-WmiObject -class Win32_OperatingSystem).Caption
-        Add-Content $archivoInstalaciones "$($env:COMPUTERNAME);$($windowsVersion);$($resultado)"
-    }
 }
