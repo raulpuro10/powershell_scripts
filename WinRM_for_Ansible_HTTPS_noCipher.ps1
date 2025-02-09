@@ -1,4 +1,4 @@
-# 1. Comprobar y cambiar el perfil de la red a "Privado" si no lo est·
+# 1. Comprobar y cambiar el perfil de la red a "Privado" si no lo est√°
 $networkProfile = Get-NetConnectionProfile
 
 # Iterar sobre cada perfil de red
@@ -8,7 +8,7 @@ foreach ($profile in $networkProfile) {
         Write-Host "La red '$($profile.Name)' no es privada. Cambiando el perfil a 'Privado'..."
         Set-NetConnectionProfile -Name $profile.Name -NetworkCategory Private
     } else {
-        Write-Host "La red '$($profile.Name)' ya est· configurada como 'Privada'."
+        Write-Host "La red '$($profile.Name)' ya est√° configurada como 'Privada'."
     }
 }
 
@@ -16,31 +16,31 @@ foreach ($profile in $networkProfile) {
 Write-Host "Habilitando WinRM..."
 winrm quickconfig -force
 
-# 3. Establecer el nivel de autenticaciÛn (habilitar autenticaciÛn b·sica)
-Write-Host "Configurando autenticaciÛn b·sica en WinRM..."
+# 3. Establecer el nivel de autenticaci√≥n (habilitar autenticaci√≥n b√°sica)
+Write-Host "Configurando autenticaci√≥n b√°sica en WinRM..."
 winrm set winrm/config/service/Auth '@{Basic="true"}'
 
 # 4. Permitir credenciales sin cifrar
 Write-Host "Permitiendo credenciales sin cifrar en WinRM..."
 winrm set winrm/config/service '@{AllowUnencrypted="true"}'
 
-# 5. Aumentar el lÌmite de memoria de la solicitud
-Write-Host "Aumentando el lÌmite de memoria para la sesiÛn de WinRM..."
+# 5. Aumentar el l√≠mite de memoria de la solicitud
+Write-Host "Aumentando el l√≠mite de memoria para la sesi√≥n de WinRM..."
 winrm set winrm/config/winrs '@{MaxMemoryPerShellMB="1024"}'
 
-# 6. Configurar el tiempo de espera (n˙mero m·ximo de shells por usuario)
-Write-Host "Configurando el tiempo de espera y el n˙mero m·ximo de shells por usuario..."
+# 6. Configurar el tiempo de espera (n√∫mero m√°ximo de shells por usuario)
+Write-Host "Configurando el tiempo de espera y el n√∫mero m√°ximo de shells por usuario..."
 winrm set winrm/config/winrs '@{MaxShellsPerUser="10"}'
 
 # 7. Obtener el FQDN del servidor actual
 $fqdn = $env:COMPUTERNAME + "." + (Get-WmiObject -Class Win32_ComputerSystem).Domain
 
-# 8. Comprobar si ya existe un certificado en el almacÈn de certificados
+# 8. Comprobar si ya existe un certificado en el almac√©n de certificados
 $cert = Get-ChildItem -Path Cert:\LocalMachine\My | Where-Object { $_.Subject -like "*$fqdn*" }
 
 # Si no se encuentra el certificado, crear un certificado autofirmado
 if ($null -eq $cert) {
-    Write-Host "No se encontrÛ un certificado para $fqdn, creando uno nuevo..."
+    Write-Host "No se encontr√≥ un certificado para $fqdn, creando uno nuevo..."
     $cert = New-SelfSignedCertificate -DnsName $fqdn -CertStoreLocation "Cert:\LocalMachine\My"
 }
 
@@ -56,8 +56,8 @@ winrm delete winrm/config/Listener?Address=*+Transport=HTTP
 Write-Host "Configurando WinRM sobre HTTPS..."
 winrm create winrm/config/Listener?Address=*+Transport=HTTPS "@{Hostname=`"$fqdn`";CertificateThumbprint=`"$thumbprint`"}"
 
-# 12. Verificar la configuraciÛn de WinRM sobre HTTPS
-Write-Host "Verificando configuraciÛn de WinRM sobre HTTPS..."
+# 12. Verificar la configuraci√≥n de WinRM sobre HTTPS
+Write-Host "Verificando configuraci√≥n de WinRM sobre HTTPS..."
 winrm enumerate winrm/config/Listener
 
 # 13. Comprobar si existe una regla en el firewall para HTTPS (puerto 5986)
@@ -65,7 +65,7 @@ $firewallRule = Get-NetFirewallRule | Where-Object { $_.DisplayName -like "*WinR
 
 # Si no existe la regla, crearla
 if ($null -eq $firewallRule) {
-    Write-Host "No se encontrÛ una regla en el firewall para WinRM HTTPS, creando una nueva..."
+    Write-Host "No se encontr√≥ una regla en el firewall para WinRM HTTPS, creando una nueva..."
     New-NetFirewallRule -Name "WinRM HTTPS" -DisplayName "Ansible WinRM HTTPS" -Protocol TCP -LocalPort 5986 -Action Allow -Direction In
 } else {
     Write-Host "Ya existe una regla en el firewall para WinRM HTTPS."
